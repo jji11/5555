@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<style type="text/css">
+			.today{
+				background-color:red;
+			}
+		</style>
+	</head>
+	<body>
+
+		<div id="main"></div>
+		<div id="sub"></div>
+
+		<script type="text/javascript">
+			var oMain = document.getElementById('main');
+			var oSub = document.getElementById('sub');
+
+			function isLeap(year){
+				var r = 0;
+				if((year%4 == 0 && year /100 != 0) || (year/400 == 0)){
+					r = 1;
+				}
+				return r;
+			}
+
+			function calendar(oDom,Year,Month,Day){
+
+				this.year = Year;
+				this.month = Month;
+				this.day = Day;
+
+				var todayDate = new Date(this.year,this.month,1);
+				var nowWeek = todayDate.getDay();
+
+				months = [31,28+isLeap(this.year),31,30,31,30,31,31,30,31,30,31];
+				var num = months[this.month] +  nowWeek;
+				var row = Math.ceil(num / 7);
+
+				document.write("<table id='tab' style='text-align:center'>");
+				document.write("<tr>\
+					<td>日</td>\
+					<td>一</td>\
+					<td>二</td>\
+					<td>三</td>\
+					<td>四</td>\
+					<td>五</td>\
+					<td>六</td>\
+				</tr>");
+
+				for(var i=0;i<row;i++){
+					document.write("<tr>");
+					for(var j=0;j<7;j++){
+
+						var index = i*7+j;
+						var date = index - nowWeek + 1;
+						var t = date;
+
+						if(t<=0){
+							t = "";
+						}
+						if(t>months[this.month]){
+							t = "";
+						}
+
+						if(date == this.day){
+							document.write("<td class='today'>"+t+"</td>");
+						}else{
+							document.write("<td>"+t+"</td>");
+						}
+						
+					}
+				}
+
+				document.write("</table>");
+
+				var oTab = document.getElementById('tab');
+				oDom.appendChild(oTab);
+
+			}
+
+			var date = new calendar(oMain,2017,8,5);
+			document.write("<br>")
+			var date2 = new calendar(oSub,2017,9,8);
+
+
+		</script>
+	</body>
+</html>
